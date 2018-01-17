@@ -1,0 +1,35 @@
+extends layout
+
+block content
+  h1= title
+  p Welcome to #{title}
+  
+  script(src='http://res.wx.qq.com/open/js/jweixin-1.0.0.js')
+  script.
+      console.log(signPackage);
+      var signPackage = !{JSON.stringify(signPackage)};
+      wx.config({
+          debug: true,
+          appId: signPackage.appId,
+          timestamp: signPackage.timestamp,
+          nonceStr:  signPackage.nonceStr,
+          signature: signPackage.signature,
+          jsApiList: [
+            'onMenuShareTimeline',
+            'onMenuShareAppMessage',
+            'onMenuShareQQ',
+            'onMenuShareQZone',
+            'onMenuShareWeibo',
+         ]
+      });
+      wx.ready(function () {
+            console.log('wx.ready');
+            wx.onMenuShareTimeline({
+                title: 'JS全栈开发', // 分享标题
+                link: 'http://www.baidu.com', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+                imgUrl: '', // 分享图标
+                success: function () {
+                console.log('share success');
+            },
+            });
+            });
